@@ -5,4 +5,4 @@ before_install:
   - mvn clean
 install:
   - mvn install -Djasypt.encryptor.password=password
-  - mvn -Djasypt.encryptor.password=password spring-boot:run
+  - ./mvnw test -B -Djasypt.encryptor.password=password
