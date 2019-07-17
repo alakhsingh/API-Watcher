@@ -4,5 +4,5 @@ branches:
 before_install:
   - mvn clean
 install:
-  - mvn compile -Djasypt.encryptor.password=password
   - mvn install -Djasypt.encryptor.password=password
+  - mvn -Djasypt.encryptor.password=password spring-boot:run
