@@ -21,11 +21,11 @@ public class UrlRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            URL url = new URL(this.url.getUrlAddress());
+            URL url = new URL(this.url.getProtocol()+"://"+this.url.getUrl());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(this.url.getRequestMethod());
             this.url.setHeaders(con);
-            logger.info("url {}, status {}",this.url.getUrlAddress(), con.getResponseCode());
+            logger.info("url {}, status {}",this.url.getUrl(), con.getResponseCode());
             this.url.setResponseCode(con.getResponseCode());
         } catch (ConnectException ex) {
             this.url.setResponseCode(503);
