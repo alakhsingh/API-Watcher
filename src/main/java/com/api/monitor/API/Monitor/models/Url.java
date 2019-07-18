@@ -22,22 +22,45 @@ public class Url implements Serializable {
     private Integer responseCode;
     @Column(name = "requestmethod")
     private String requestMethod;
+    @Column(name = "tag")
+    private String tag;
     @Column(name = "timestamp")
     private String timestamp;
+    @Column(name = "timestampSinceLastChange")
+    private String timestampSinceLastChange;
 
-    public Url(String url, String requestMethod, String protocol) {
+    public Url(String url, String requestMethod, String protocol, String tag) {
         this.url = url;
         this.requestMethod = requestMethod;
         this.protocol = protocol;
+        this.tag = tag;
     }
 
-    public Url(String url, Integer responseCode, String requestMethod, String timestamp, String protocol) {
+    public Url(String url, Integer responseCode, String requestMethod, String timestamp, String protocol, String timestampSinceLastChange, String tag) {
         super();
         this.url = url;
         this.responseCode = responseCode;
         this.requestMethod = requestMethod;
         this.timestamp = timestamp;
         this.protocol = protocol;
+        this.timestampSinceLastChange = timestampSinceLastChange;
+        this.tag = tag;
+    }
+
+    public String getTimestampSinceLastChange() {
+        return timestampSinceLastChange;
+    }
+
+    public void setTimestampSinceLastChange(String timestampSinceLastChange) {
+        this.timestampSinceLastChange = timestampSinceLastChange;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public Url() {
