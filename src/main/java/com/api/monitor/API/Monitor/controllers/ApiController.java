@@ -3,6 +3,7 @@ package com.api.monitor.API.Monitor.controllers;
 import com.api.monitor.API.Monitor.models.RequestUrl;
 import com.api.monitor.API.Monitor.models.ResponseUrl;
 import com.api.monitor.API.Monitor.models.Url;
+import com.api.monitor.API.Monitor.models.UrlRepository;
 import com.api.monitor.API.Monitor.services.UrlMonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletException;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,8 @@ import java.util.Date;
 public class ApiController {
     private Logger logger = LoggerFactory.getLogger(ApiController.class);
     private UrlMonitoringService urlMonitoringService;
-    private String testStatusCode, testInitialmessage;
+    private String testStatusCode, testInitialMessage;
+    private UrlRepository urlRepository;
 
     private Boolean testUrlConnection(Url u) {
         logger.info("Initial url test for {}",u.getUrlAddress());
@@ -35,7 +35,7 @@ public class ApiController {
 
         } catch (Exception e) {
                     e.printStackTrace();
-                    testInitialmessage = e.getMessage();
+                    testInitialMessage = e.getMessage();
                     testStatusCode = "503";
                     return false;
                 }
@@ -43,8 +43,9 @@ public class ApiController {
     }
 
     @Autowired
-    public ApiController(UrlMonitoringService urlMonitoringService) {
+    public ApiController(UrlMonitoringService urlMonitoringService, UrlRepository urlRepository) {
         this.urlMonitoringService = urlMonitoringService;
+        this.urlRepository = urlRepository;
     }
 
     @RequestMapping(value = "/addUrl", method = RequestMethod.GET)
@@ -55,10 +56,10 @@ public class ApiController {
         }
         Url url = new Url(requestUrl.getProtocol()+"://"+requestUrl.getUrl(),requestUrl.getRequestMethod());
         if(!testUrlConnection(url)) {
-            return new ResponseUrl(testInitialmessage,new ResponseUrl.Details(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),testStatusCode));
+            return new ResponseUrl(testInitialMessage,new ResponseUrl.Details(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),testStatusCode));
         }
         logger.info("New Api added {}, name {}",requestUrl.getUrl(), requestUrl.getName());
-
+        urlRepository.save(requestUrl);
         urlMonitoringService.addUrlToMonitor(url);
         urlMonitoringService.runReadyToMonitorUrlQueue();
         return new ResponseUrl("Url "+requestUrl.getUrl()+" is being monitored",new ResponseUrl.Details(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),"200"));

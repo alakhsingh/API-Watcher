@@ -1,13 +1,41 @@
 package com.api.monitor.API.Monitor.models;
 
-public class RequestUrl {
-    private String protocol;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "url")
+public class RequestUrl implements Serializable {
+    @Id
+    @Column(name = "url")
     private String url;
-    private String description;
-    private String requestMethod;
-    private Integer portNumber;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "protocol")
+    private String protocol;
+    @Column(name = "requestmethod")
+    private String requestMethod;
+    @Column(name = "tag")
     private String tag;
+
+    public RequestUrl(String url, String name, String description, String protocol, String requestMethod, String tag) {
+        super();
+        this.url = url;
+        this.name = name;
+        this.description = description;
+        this.protocol = protocol;
+        this.requestMethod = requestMethod;
+        this.tag = tag;
+    }
+
+    public RequestUrl() {
+        super();
+    }
 
     public String getProtocol() {
         return protocol;
@@ -55,14 +83,6 @@ public class RequestUrl {
 
     public void setRequestMethod(String requestMethod) {
         this.requestMethod = requestMethod;
-    }
-
-    public Integer getPortNumber() {
-        return portNumber;
-    }
-
-    public void setPortNumber(Integer portNumber) {
-        this.portNumber = portNumber;
     }
 
 }

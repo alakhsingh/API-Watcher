@@ -4,7 +4,6 @@ import com.api.monitor.API.Monitor.models.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.text.SimpleDateFormat;
@@ -27,9 +26,9 @@ public class UrlRunnable implements Runnable {
             con.setRequestMethod(this.url.getRequestMethod());
             this.url.setHeaders(con);
             logger.info("url {}, status {}",this.url.getUrlAddress(), con.getResponseCode());
-            this.url.setStatus(con.getResponseCode());
+            this.url.setResponseCode(con.getResponseCode());
         } catch (ConnectException ex) {
-            this.url.setStatus(503);
+            this.url.setResponseCode(503);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ProtocolException e) {

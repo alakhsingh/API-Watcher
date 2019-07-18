@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 public class Url {
 
     private String urlAddress;
-    private Integer status;
+    private Integer responseCode;
     private String requestMethod;
     private String timestamp;
 
@@ -24,12 +24,12 @@ public class Url {
         this.urlAddress = urlAddress;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getResponseCode() {
+        return responseCode;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
     }
 
     public String getRequestMethod() {
