@@ -6,7 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,14 +27,14 @@ public class UrlMonitoringService {
 
     //runs threads for every 2 seconds
     public void runReadyToMonitorUrlQueue() {
-
         for (int i = 0; i < readyToMonitorUrl.size(); i++) {
             scheduledExecutorService.scheduleAtFixedRate
                     (new UrlRunnable(readyToMonitorUrl.get(i)), 0, 2, TimeUnit.SECONDS);
-            logger.info("run {}",readyToMonitorUrl.get(i).getStatus());
+            logger.info("run {}",readyToMonitorUrl.get(i).getUrlAddress());
         }
         currentMonitoringUrl.addAll(readyToMonitorUrl);
         readyToMonitorUrl.clear();
+
     }
 
     public void addUrlToMonitor(Url url) {

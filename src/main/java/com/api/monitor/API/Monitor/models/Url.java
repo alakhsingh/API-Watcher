@@ -1,5 +1,9 @@
 package com.api.monitor.API.Monitor.models;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 public class Url {
 
     private String urlAddress;
@@ -42,5 +46,15 @@ public class Url {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+    public static void setHeaders(HttpURLConnection con) throws IOException {
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "*/*");
+        con.setRequestProperty("Cache-Control", "no-cache");
+        con.setRequestProperty("Connection", "keep-alive");
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.flush();
+        out.close();
     }
 }

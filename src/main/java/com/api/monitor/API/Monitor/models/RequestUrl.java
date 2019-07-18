@@ -1,12 +1,21 @@
 package com.api.monitor.API.Monitor.models;
 
 public class RequestUrl {
+    private String protocol;
     private String url;
     private String description;
     private String requestMethod;
     private Integer portNumber;
     private String name;
     private String tag;
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
     public String getDescription() {
         return description;

@@ -19,29 +19,19 @@ public class UrlRunnable implements Runnable {
         this.url = url;
     }
 
-    private void setHeaders(HttpURLConnection con) throws IOException {
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "*/*");
-        con.setRequestProperty("Cache-Control", "no-cache");
-        con.setRequestProperty("Connection", "keep-alive");
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.flush();
-        out.close();
-    }
-
     @Override
     public void run() {
         try {
             URL url = new URL(this.url.getUrlAddress());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(this.url.getRequestMethod());
-            setHeaders(con);
+            this.url.setHeaders(con);
+            logger.info("url {}, status {}",this.url.getUrlAddress(), con.getResponseCode());
             this.url.setStatus(con.getResponseCode());
         } catch (ConnectException ex) {
             this.url.setStatus(503);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
